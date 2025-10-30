@@ -5,3 +5,12 @@ export default function Home(){
         </div>
     )
 }
+
+
+const style = {
+    container : {
+        width : "100%",
+        height : "100%",
+        
+    }
+}
