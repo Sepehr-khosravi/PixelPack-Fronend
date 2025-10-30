@@ -10,14 +10,14 @@ import Error from "./pages/Error";
 // Hooks
 import {useAuth} from "./hooks/auth";
 
+
 export default function App() {
     const {isAuthenticated} = useAuth();
-
     return (
         <Routes>
             {/* Public routes */}
             <Route path="/" element={<Home/>}/>
-            <Route path="/auth/login" element={<Auth />} /> {/* it must be <Login /> component */}
+            <Route path="/auth/login" element={<Auth/>}/> {/* it must be <Login /> component */}
             <Route path="/auth" element={<Navigate to="/auth/login"/>}/>
 
             {/* Protected routes */}
@@ -39,3 +39,8 @@ export default function App() {
         </Routes>
     );
 }
+
+
+
+
+
