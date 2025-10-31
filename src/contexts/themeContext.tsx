@@ -9,14 +9,14 @@ import type {ThemeInterface} from "../types/themeInterface.ts";
 
 
 export const ThemeContext: Context<ThemeInterface> = createContext<ThemeInterface>({
-    theme: window.matchMedia("(prefers-color-schema : dark)").matches ? "dark" : "light",
+    theme: window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
     toggleTheme: (): void => {
     }
 });
 
 export const ThemeProvider = ({children}: { children: ReactNode }) => {
     const [theme, setTheme] = useState<ThemeType>(
-        (): "dark" | "light" => (localStorage.getItem("theme") === "dark" ? "dark" : "light")
+        (): "dark" | "light" => ((localStorage.getItem("theme") ? localStorage.getItem("theme") === "dark" ? "dark" : "light" : false) || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"))
     );
 
     const toggleTheme = (): void => {
@@ -24,11 +24,10 @@ export const ThemeProvider = ({children}: { children: ReactNode }) => {
         setTheme(prev => (prev === "dark" ? "light" : "dark"));
     }
 
-    // useEffect(() => {
-    //     const themeMode : string | null = localStorage.getItem("theme");
-    //     if(!themeMode) setTheme(window.matchMedia("(prefers-color-schema : dark)").matches ? "dark" : "light");
-    //     setTheme(themeMode === "dark" ? "dark" : "light");
-    // }, []);
+    useEffect(() => {
+
+
+    }, []);
 
 
     useEffect(() => {
