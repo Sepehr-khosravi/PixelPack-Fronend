@@ -1,7 +1,11 @@
-// Sidebar.jsx
+//assets
 import LogoTwo from "../../assets/logo-test-two.png";
-import { useState } from "react";
-import { useTheme } from "../../hooks/theme.ts";
+//hooks
+import {useState} from "react";
+import {useTheme} from "../../hooks/theme.ts";
+
+//Packages
+import {NavLink} from "react-router-dom";
 
 // Icons
 const HomeIcon = () => <i className="ri-home-4-line"></i>;
@@ -10,41 +14,47 @@ const SettingsIcon = () => <i className="ri-settings-line"></i>;
 const ChatIcon = () => <i className="ri-question-answer-line"></i>;
 
 export default function Sidebar() {
+    const [locationUrl, setLocation] = useState<string>(location.pathname);
     const [activeItem, setActiveItem] = useState('Home');
-    const { toggleTheme, theme } = useTheme();
+    const {toggleTheme, theme} = useTheme();
     const ThemeIcon = () => theme === "dark" ? <i className="ri-sun-line"></i> : <i className="ri-moon-line"></i>;
 
     const menuItems = [
-        { id: 'Home', label: 'Home', icon: <HomeIcon /> },
-        { id: 'Packs', label: 'Packs', icon: <PacksIcon /> },
-        { id: 'Chat', label: 'Chat', icon: <ChatIcon /> },
-        { id: 'Settings', label: 'Settings', icon: <SettingsIcon /> },
+        {id: 'Home', label: 'Home', icon: <HomeIcon/>},
+        {id: 'Packs', label: 'Packs', icon: <PacksIcon/>},
+        {id: 'Chat', label: 'Chat', icon: <ChatIcon/>},
+        {id: 'Settings', label: 'Settings', icon: <SettingsIcon/>},
     ];
+
 
     return (
         <div className="Sidebar" style={styles.container}>
             {/* Logo Section */}
             <div className="logo-nav" style={styles.logoSection}>
-                <img src={LogoTwo} style={styles.img} alt="logo" />
+                <img src={LogoTwo} style={styles.img} alt="logo"/>
             </div>
 
             {/* Navigation Items */}
             <div className="Items-middle" style={styles.itemsContainer}>
                 {menuItems.map(item => (
-                    <div
+                    <NavLink
+                        to={`/${item.id.toLowerCase()}`}
                         key={item.id}
                         className={`nav-item ${activeItem === item.id ? 'active' : ''}`}
                         style={{
                             ...styles.navItem,
-                            ...(activeItem === item.id ? styles.activeItem : {})
+                            ...((activeItem === item.id ? styles.activeItem : {}) || (locationUrl === item.id ? styles.activeItem : {}) )
                         }}
-                        onClick={() => setActiveItem(item.id)}
+                        onClick={() =>{
+                            setActiveItem(item.id);
+                            setLocation(item.id);
+                        }}
                         title={item.label} // Tooltip for better UX
                     >
                         <div style={styles.iconWrapper}>
                             {item.icon}
                         </div>
-                    </div>
+                    </NavLink>
                 ))}
             </div>
 
@@ -56,7 +66,7 @@ export default function Sidebar() {
                     onClick={toggleTheme}
                     title="Toggle Theme"
                 >
-                    <ThemeIcon />
+                    <ThemeIcon/>
                 </div>
             </div>
         </div>
@@ -64,7 +74,7 @@ export default function Sidebar() {
 }
 
 // Styles
-const styles : any = {
+const styles: any = {
     container: {
         width: "80px",
         height: "100vh",

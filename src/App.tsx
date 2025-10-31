@@ -6,40 +6,45 @@ import Auth from "./pages/Auth";
 import Chat from "./pages/Chat";
 import Setting from "./pages/Setting";
 import Error from "./pages/Error";
+import Packs from "./pages/Packs";
 
 // Hooks
 import {useAuth} from "./hooks/auth";
+import Sidebar from "./components/common/sidebar.tsx";
 
-//components
-// import Sidebar from "./components/common/sidebar.tsx";
 
 export default function App() {
     const {isAuthenticated} = useAuth();
     return (
-        <Routes>
-            {/*<Sidebar />*/}
-            {/* Public routes */}
-            <Route path="/" element={<Home/>}/>
-            <Route path="/auth/login" element={<Auth/>}/> {/* it must be <Login /> component */}
-            <Route path="/auth" element={<Navigate to="/auth/login"/>}/>
+        <>
+            <Sidebar/>
+            <Routes>
+                {/* Public routes */}
+                <Route path="/" element={<Home/>}/>
+                <Route path="/home" element={<Home/>}/>
+                <Route path="/auth/signin" element={<Auth/>}/> {/* it must be <Login /> component */}
+                <Route path="/auth" element={<Navigate to="/auth/login"/>}/>
 
-            {/* Protected routes */}
-            {isAuthenticated ? (
-                <>
-                    <Route path="/chat" element={<Chat/>}/>
-                    <Route path="/setting" element={<Setting/>}/>
-                </>
-            ) : (
-                // Redirect user to /auth if not logged in
-                <>
-                    <Route path="/chat" element={<Navigate to="/auth/login"/>}/>
-                    <Route path="/setting" element={<Navigate to="/auth/login"/>}/>
-                </>
-            )}
+                {/* Protected routes */}
+                {isAuthenticated ? (
+                    <>
+                        <Route path="/chat" element={<Chat/>}/>
+                        <Route path="/settings" element={<Setting/>}/>
+                        <Route path="/packs" element={<Packs />} />
+                    </>
+                ) : (
+                    // Redirect user to /auth if not logged in
+                    <>
+                        <Route path="/chat" element={<Navigate to="/auth/signin"/>}/>
+                        <Route path="/settings" element={<Navigate to="/auth/signin"/>}/>
+                        <Route path="/packs" element={<Navigate to="/auth/signin"/>} />
+                    </>
+                )}
 
-            {/* Fallback route */}
-            <Route path="*" element={<Error/>}/>
-        </Routes>
+                {/* Fallback route */}
+                <Route path="*" element={<Error/>}/>
+            </Routes>
+        </>
     );
 }
 
