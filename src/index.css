@@ -1,14 +1,115 @@
 :root {
-    --color-background: #0D1117;
-    --color-text: #FFFFFF;
+    /* Dark Theme (Default) */
+    --color-background: #0f0f23;
+    --color-background-alt: #1a1a2e;
+    --color-text: #e2e8f0;
+    --color-text-muted: #94a3b8;
+    --color-border: #2d3748;
+    --color-background-sidebar: #161627;
+    --color-accent: #6366f1;
+    --color-accent-hover: #5a5cf3;
+    --color-accent-text: #ffffff;
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 [data-theme="light"] {
-    --color-background: #FFFFFF;
-    --color-text: #1f2328;
+    /* Light Theme */
+    --color-background: #f8fafc;
+    --color-background-alt: #ffffff;
+    --color-text: #1e293b;
+    --color-text-muted: #64748b;
+    --color-border: #e2e8f0;
+    --color-background-sidebar: #ffffff;
+    --color-accent: #6366f1;
+    --color-accent-hover: #5a5cf3;
+    --color-accent-text: #ffffff;
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
     background-color: var(--color-background);
     color: var(--color-text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    transition: all 0.3s ease;
+}
+
+/* Sidebar Styles */
+.Sidebar {
+    background-color: var(--color-background-sidebar);
+    color: var(--color-text);
+    border-color: var(--color-border);
+    box-shadow: var(--shadow);
+}
+
+/* Hover effects only - no expansion */
+.nav-item:hover {
+    opacity: 1 !important;
+    background-color: var(--color-background-alt);
+    border-color: var(--color-border);
+}
+
+.theme-toggle:hover {
+    opacity: 1 !important;
+    background-color: var(--color-background-alt);
+}
+
+/* Active state enhancements */
+.nav-item.active {
+    opacity: 1;
+    background-color: var(--color-accent);
+    color: var(--color-accent-text);
+    border-color: var(--color-accent);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+/* Smooth transitions */
+.Sidebar, .nav-item, .theme-toggle {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Main content area */
+.main-content {
+    margin-left: 80px;
+    padding: 40px;
+    min-height: 100vh;
+    background: var(--color-background);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-text-muted);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .Sidebar {
+        width: 70px;
+    }
+
+    .main-content {
+        margin-left: 70px;
+        padding: 20px;
+    }
 }
