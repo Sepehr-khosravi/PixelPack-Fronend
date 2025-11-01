@@ -108,6 +108,10 @@ body {
     background: var(--color-text-muted);
 }
 
+.buttons button:hover{
+    opacity : 0.95;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .Sidebar {
