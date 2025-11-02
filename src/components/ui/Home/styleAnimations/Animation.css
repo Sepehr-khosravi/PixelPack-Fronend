@@ -1,0 +1,11 @@
+.buttons button:hover{
+    scale : 1.05;
+}
+
+.optionCard{
+    cursor: pointer;
+    transition: .3s ease all;
+}
+.optionCard:hover{
+    scale : 1.05;
+}
