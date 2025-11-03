@@ -22,7 +22,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setLoading(false);
     }, []);
 
-    const login = (token : string, userData : UserInterface)=>{
+    const login = (token : string, userData : UserInterface):void=>{
         localStorage.setItem("token", token);
         localStorage.setItem("user" , JSON.stringify(userData));
         setUser(userData);

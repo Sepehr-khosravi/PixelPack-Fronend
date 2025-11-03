@@ -2,11 +2,20 @@
 import React from "react";
 //hooks
 import {useState} from 'react';
+import {useAuth} from "../../../hooks/auth";
 
 //interface
 import type {FormDataSignUp} from "../../../types";
 
-export default function SignUp() {
+//config
+import config from "../../../config";
+
+//axios
+import axios from "axios";
+
+export default function SignUp(): React.ReactElement {
+    const {login} = useAuth();
+    const [errorText, setError] = useState<string>("");
     const [formData, setFormData] = useState<FormDataSignUp>({
         fullName: '',
         email: '',
@@ -21,10 +30,27 @@ export default function SignUp() {
         });
     };
 
-    const handleSubmit: React.EventHandler<any> = (e: any): void => {
+    const handleSubmit: React.EventHandler<any> = async(e: any): Promise<void> => {
         e.preventDefault();
-        // Handle sign up logic here
-        console.log('Sign up attempt:', formData);
+        try{
+            if(formData.confirmPassword !== formData.password || !formData.password || !formData.confirmPassword){
+                setError("invalid passwords");
+                return
+            }
+            const response : any = await axios.post(config.Api.Auth.Signup, {
+                username : formData.fullName,
+                email : formData.email,
+                password : formData.password
+            });
+            if(!response || !response.data || !response.data.token || !response.data.data){
+                setError(response.error.toString());
+                return ;
+            }
+            login(response.data.token, response.data.data);
+        }
+        catch(e : any){
+            console.error(e);
+        }
     };
 
     return (
@@ -95,15 +121,9 @@ export default function SignUp() {
                     required
                 />
             </div>
-
-            <div style={styles.terms}>
-                <label style={styles.remember}>
-                    <input type="checkbox" style={styles.checkbox} required/>
-                    I agree to the <a href="#" style={styles.termsLink}>Terms of Service</a> and <a href="#"
-                                                                                                    style={styles.termsLink}>Privacy
-                    Policy</a>
-                </label>
-            </div>
+            <label>
+                <p style={styles.textError +  {display : errorText ? "block" : "none"}}>{errorText}</p>
+            </label>
 
             <button type="submit" style={styles.submitButton}>
                 Create Account
@@ -157,6 +177,9 @@ const styles: any = {
     termsLink: {
         color: "var(--color-accent)",
         textDecoration: "none"
+    },
+    textError : {
+       color : 'red'
     },
     submitButton: {
         padding: "12px 16px",

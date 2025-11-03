@@ -2,11 +2,18 @@
 import React from "react";
 //hooks
 import {useState} from 'react';
+import {useAuth} from "../../../hooks/auth.ts";
 //interface
 import type {FormDataSignIn} from "../../../types";
+//config
+import config from "../../../config";
+//axios
+import axios from "axios";
 
 
-export default function SignIn():React.ReactElement {
+export default function SignIn(): React.ReactElement {
+    const {login} = useAuth();
+    //data
     const [formData, setFormData] = useState<FormDataSignIn>({
         email: '',
         password: ''
@@ -19,10 +26,19 @@ export default function SignIn():React.ReactElement {
         });
     };
 
-    const handleSubmit: React.EventHandler<any> = (e: any): void => {
+    const handleSubmit: React.EventHandler<any> = async (e: any) : Promise<void> => {
         e.preventDefault();
-        // Handle sign in logic here
-        console.log('Sign in attempt:', formData);
+        try{
+            const response : any = await axios.post(config.Api.Auth.Signin, formData);
+            if(!response || !response.data || !response.data.token || !response.data.data){
+                console.error("error : " , response.statusText);
+                return;
+            }
+            login(response.data.token, response.data.data);
+            location.pathname = "/home";
+        }catch (e : any){
+            console.error(e);
+        }
     };
 
     return (
@@ -61,10 +77,6 @@ export default function SignIn():React.ReactElement {
             </div>
 
             <div style={styles.options}>
-                <label style={styles.remember}>
-                    <input type="checkbox" style={styles.checkbox}/>
-                    Remember me
-                </label>
                 <a href="#" style={styles.forgotLink}>Forgot password?</a>
             </div>
 
@@ -131,7 +143,7 @@ const styles: any = {
         alignItems: "center",
         gap: "8px",
         color: "var(--color-text-muted)",
-        cursor: "pointer"
+        cursor: "pointer",
     },
     checkbox: {
         accentColor: "var(--color-accent)"
